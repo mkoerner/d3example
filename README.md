@@ -1,2 +1,2 @@
-d3example
+Playground with d3.js
 =========
