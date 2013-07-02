@@ -1,5 +1,6 @@
 
 html {
+<<<<<<< HEAD
   font-size: 11px;
   font-family: sans-serif;
 }
@@ -10,4 +11,18 @@ h1 {
 
 .label {
   font-size: 14px;
+=======
+  font-size: 12px;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.label {
+  font-size: 14px;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+#show {
+  font-size: 14px;
+  font-family: 'Helvetica Neue', sans-serif;
+>>>>>>> master
 }

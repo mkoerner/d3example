@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
+<<<<<<< HEAD
 	<head>
 		<meta charset="utf-8">
 		<title>Income Equality</title>
@@ -127,5 +128,129 @@
 		<table>
 			<tr><th>Country</th><th>Per capita income</th><th>Gini</th></tr>
 		</table>
+=======
+  <head>
+    <meta charset="utf-8">
+    <title>Income Equality</title>
+    <script type="text/javascript" src="d3/d3.v3.js"></script>
+    <link rel="stylesheet" href="style.css"></link>
+    <style type="text/css">
+
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+      }
+      
+      .axis text { }
+
+    </style>   
+  </head>
+  <body>
+  <script type="text/javascript">
+
+      var w = 600;
+      var h = 400;
+      var pad = 50;
+
+      d3.csv("income_data.csv",function(data) { 
+
+        for (i = 0; i < data.length; ++i) {
+          data[i]["ipc"] = parseFloat(data[i]["Income per Capita"]);
+          data[i]["gini"] = parseFloat(data[i]["Gini"]);
+        }
+
+        var xScale = d3.scale.log()
+          .domain([
+            d3.min(data, function(d) { return d.ipc; }) * 0.9, 
+            d3.max(data, function(d) { return d.ipc; }) * 1.1
+          ])
+          .range([pad, w-pad]);
+
+        var yScale = d3.scale.log()
+          .domain([
+            d3.min(data, function(d) { return d.gini; }) * 0.9, 
+            d3.max(data, function(d) { return d.gini; }) * 1.1
+          ])
+          .range([h-pad, pad / 2 ]);
+
+        var xAxis = d3.svg.axis()
+          .orient("bottom")
+          .tickFormat(d3.format(".0"))
+          .tickValues([10, 100, 1000, 10000, 40000, 100000])
+          .scale(xScale);
+
+        var yAxis = d3.svg.axis()
+          .scale(yScale)
+          .orient("left")
+          .tickFormat(d3.format(".0"))
+          .ticks(5);
+
+        var svg = d3.select(".start")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h);
+
+        svg.selectAll("circle")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr({
+            cx : function(d) { return xScale(d.ipc); },
+            cy : function(d) { return yScale(d.gini); },
+            r  : 1.0,
+            fill: "white",
+            stroke: "black",
+            "stroke-width": 2.0
+          })
+          .on("mouseover", function() { 
+            d3.select(this)
+              .attr("fill","#A61300")
+              .attr("r",4.0);
+            d3.select("#show").text(
+              this.__data__.Country +
+              ": Per capita income = " + this.__data__.ipc +
+              ", Gini = " + this.__data__.gini
+            );
+          })
+          .on("mouseout", function() { 
+            d3.select(this)
+              .attr("fill","white")
+              .attr("r",1.0);
+          });
+
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0," + (h - pad) + ")")
+          .call(xAxis);
+      
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(" + pad + ",0)")
+          .call(yAxis);
+
+        svg.append("text")
+          .attr("class", "label")
+          .attr("text-anchor","center")
+          .attr("x", w / 2.0 - pad)
+          .attr("y", h - pad / 4)
+          .text("Income per capita");
+      
+        svg.append("text")
+          .attr("class", "label")
+          .attr("text-anchor", "end")
+          .attr("x", - h / 2 + pad)
+          .attr("y", pad / 4)
+          .attr("dy", ".75em")
+          .attr("transform", "rotate(-90)")
+          .text("Gini");
+
+      });
+
+    </script>
+    <div class="start"></div>
+    <div id="show">Select point ...</div>
+>>>>>>> master
   </body>
 </html>
